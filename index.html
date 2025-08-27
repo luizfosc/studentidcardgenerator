@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Carteirinha de Estudante</title>
+    <!-- Tailwind CSS for modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts for a nicer typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Using the 'Inter' font family for the entire application */
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-slate-100 flex items-center justify-center min-h-screen p-4 sm:p-6 lg:p-8">
+
+    <div class="w-full max-w-6xl mx-auto flex flex-col lg:flex-row items-center lg:items-start gap-8 lg:gap-12">
+
+        <!-- Left Side: Card Preview -->
+        <div class="w-full max-w-sm lg:sticky lg:top-8">
+            <h2 class="text-2xl font-bold text-slate-800 text-center mb-4">Pré-visualização</h2>
+            <div class="card-preview bg-white rounded-2xl shadow-lg overflow-hidden" id="cardPreview">
+                <!-- A decorative gradient background for the card -->
+                <div class="bg-gradient-to-br from-blue-200 to-indigo-300 h-28"></div>
+                <div class="p-6 pt-0 relative">
+                    <!-- Student Photo Container -->
+                    <div class="photo-container -mt-16 w-28 h-28 mx-auto rounded-full border-4 border-white shadow-lg bg-slate-200 flex items-center justify-center overflow-hidden">
+                        <img id="studentPhoto" alt="Foto do Aluno" class="w-full h-full object-cover hidden">
+                        <div class="photo-placeholder text-slate-500 text-xs text-center p-2" style="display: block;">Carregar Foto</div>
+                    </div>
+
+                    <!-- Student Information -->
+                    <div class="text-center mt-4">
+                        <h3 class="text-xl font-bold text-slate-900"><span id="previewName">Nome do Aluno</span></h3>
+                        <p class="text-slate-600 text-sm"><span id="previewCourse">Curso</span></p>
+                    </div>
+
+                    <!-- RGM and Validity -->
+                    <div class="flex justify-between text-sm text-slate-700 mt-6 pt-4 border-t border-slate-200">
+                        <span class="font-semibold">RGM: <span id="previewRGM" class="font-normal">0000000-0</span></span>
+                        <span class="font-semibold">VAL: <span id="previewValidity" class="font-normal">12/2028</span></span>
+                    </div>
+
+                    <!-- University Logo and Name -->
+                    <div class="university-logo mt-6 flex justify-center items-center min-h-[50px]">
+                        <img id="universityLogoPreview" alt="Logo da Universidade" class="max-w-[150px] max-h-[50px] object-contain hidden">
+                        <p id="universityNameText" class="text-sm font-semibold text-slate-600 uppercase tracking-wider text-center" style="display: block;">NOME DA UNIVERSIDADE</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Side: Form Container -->
+        <div class="form-container bg-white rounded-2xl shadow-lg p-6 sm:p-8 w-full max-w-md">
+            <h2 class="text-2xl font-bold text-slate-800 text-center mb-6">Gerador de Carteirinha</h2>
+            <form class="space-y-4">
+                <!-- Full Name -->
+                <div class="form-group">
+                    <label for="studentName" class="block text-sm font-medium text-slate-700 mb-1">Nome Completo</label>
+                    <input type="text" id="studentName" placeholder="Ex: Maria da Silva" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                </div>
+
+                <!-- Course -->
+                <div class="form-group">
+                    <label for="studentCourse" class="block text-sm font-medium text-slate-700 mb-1">Curso</label>
+                    <input type="text" id="studentCourse" placeholder="Ex: Engenharia de Software" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                </div>
+
+                <!-- Two Columns for RGM and Validity -->
+                <div class="two-columns grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div class="form-group">
+                        <label for="studentRGM" class="block text-sm font-medium text-slate-700 mb-1">RGM</label>
+                        <input type="text" id="studentRGM" placeholder="Ex: 1234567-8" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    </div>
+                    <div class="form-group">
+                        <label for="cardValidity" class="block text-sm font-medium text-slate-700 mb-1">Validade</label>
+                        <input type="text" id="cardValidity" placeholder="Ex: 12/2028" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                    </div>
+                </div>
+
+                <!-- University Name -->
+                <div class="form-group">
+                    <label for="universityName" class="block text-sm font-medium text-slate-700 mb-1">Nome da Universidade</label>
+                    <input type="text" id="universityName" placeholder="Ex: Universidade Federal" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition">
+                </div>
+
+                <!-- Student Photo Upload -->
+                <div class="form-group">
+                    <label for="studentPhotoUpload" class="block text-sm font-medium text-slate-700 mb-1">Foto do Aluno</label>
+                    <input type="file" id="studentPhotoUpload" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                </div>
+
+                <!-- University Logo Upload -->
+                <div class="form-group">
+                    <label for="universityLogoUpload" class="block text-sm font-medium text-slate-700 mb-1">Logo da Universidade (opcional)</label>
+                    <input type="file" id="universityLogoUpload" accept="image/*" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100">
+                </div>
+
+                <!-- Download Button -->
+                <button type="button" class="download-button w-full py-3 px-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors mt-4" id="downloadCard">
+                    Baixar Carteirinha (PNG)
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- dom-to-image library for converting the card preview to an image -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+    <script>
+        // --- DOM Element References ---
+        // Getting references to all the input fields
+        const studentName = document.getElementById('studentName');
+        const studentCourse = document.getElementById('studentCourse');
+        const studentRGM = document.getElementById('studentRGM');
+        const cardValidity = document.getElementById('cardValidity');
+        const universityName = document.getElementById('universityName');
+        const studentPhotoUpload = document.getElementById('studentPhotoUpload');
+        const universityLogoUpload = document.getElementById('universityLogoUpload');
+        const downloadCardBtn = document.getElementById('downloadCard');
+
+        // Getting references to all the preview elements on the card
+        const previewName = document.getElementById('previewName');
+        const previewCourse = document.getElementById('previewCourse');
+        const previewRGM = document.getElementById('previewRGM');
+        const previewValidity = document.getElementById('previewValidity');
+        const universityNameText = document.getElementById('universityNameText');
+        const studentPhoto = document.getElementById('studentPhoto');
+        const photoPlaceholder = document.querySelector('.photo-placeholder');
+        const universityLogoPreview = document.getElementById('universityLogoPreview');
+        const cardPreview = document.getElementById('cardPreview');
+
+        // --- Core Functions ---
+        /**
+         * Updates the card preview with the values from the form fields.
+         * Uses default text if a field is empty.
+         */
+        function updatePreview() {
+            previewName.textContent = studentName.value || 'Nome do Aluno';
+            previewCourse.textContent = studentCourse.value || 'Curso';
+            previewRGM.textContent = studentRGM.value || '0000000-0';
+            previewValidity.textContent = cardValidity.value || '12/2028';
+            universityNameText.textContent = universityName.value || 'NOME DA UNIVERSIDADE';
+        }
+
+        // --- Event Listeners ---
+        // Add event listeners to all text input fields to update the preview in real-time.
+        [studentName, studentCourse, studentRGM, cardValidity, universityName].forEach(input => {
+            input.addEventListener('input', updatePreview);
+        });
+
+        /**
+         * Handles the student photo upload.
+         * Reads the selected file and displays it on the card preview.
+         */
+        studentPhotoUpload.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    studentPhoto.src = e.target.result;
+                    studentPhoto.classList.remove('hidden');
+                    photoPlaceholder.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                studentPhoto.classList.add('hidden');
+                photoPlaceholder.style.display = 'block';
+            }
+        });
+
+        /**
+         * Handles the university logo upload.
+         * Reads the selected file and displays it on the card, hiding the university name text.
+         */
+        universityLogoUpload.addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    universityLogoPreview.src = e.target.result;
+                    universityLogoPreview.classList.remove('hidden');
+                    universityNameText.style.display = 'none';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                universityLogoPreview.classList.add('hidden');
+                universityNameText.style.display = 'block';
+            }
+        });
+
+        /**
+         * Handles the download button click.
+         * Uses the dom-to-image library to convert the card preview div to a PNG and trigger a download.
+         */
+        downloadCardBtn.addEventListener('click', function() {
+            // Options to improve image quality
+            const options = {
+                quality: 1.0,
+                width: cardPreview.offsetWidth * 2,
+                height: cardPreview.offsetHeight * 2,
+                style: {
+                    transform: 'scale(2)',
+                    transformOrigin: 'top left'
+                }
+            };
+
+            domtoimage.toPng(cardPreview, options)
+                .then(function(dataUrl) {
+                    const link = document.createElement('a');
+                    link.download = 'carteirinha-de-estudante.png';
+                    link.href = dataUrl;
+                    link.click();
+                })
+                .catch(function(error) {
+                    console.error('Oops, something went wrong!', error);
+                });
+        });
+
+        // --- Initial Call ---
+        // Initialize the preview with default values when the page loads.
+        updatePreview();
+    </script>
+</body>
+</html>
